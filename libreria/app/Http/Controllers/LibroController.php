@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Libro;
+use App\Models\Categoria;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\LibroRequest;
@@ -28,8 +29,8 @@ class LibroController extends Controller
     public function create(): View
     {
         $libro = new Libro();
-
-        return view('libro.create', compact('libro'));
+        $categorias = Categoria::pluck('nombre', 'id');
+        return view('libro.create', compact('libro', 'categorias'));
     }
 
     /**
@@ -59,7 +60,7 @@ class LibroController extends Controller
     public function edit($id): View
     {
         $libro = Libro::find($id);
-
+        $categorias = Categoria::pluck('nombre', 'id');
         return view('libro.edit', compact('libro'));
     }
 

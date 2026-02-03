@@ -16,11 +16,12 @@
                                 {{ __('Libros') }}
                             </span>
 
-                             <div class="float-right">
-                                <a href="{{ route('libros.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                            <div class="float-right">
+                                <a href="{{ route('libros.create') }}" class="btn btn-primary btn-sm float-right"
+                                    data-placement="left">
+                                    {{ __('Create New') }}
                                 </a>
-                              </div>
+                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -35,9 +36,9 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-									<th >Categoria Id</th>
-									<th >Nombre</th>
+
+                                        <th>Categoria</th>
+                                        <th>Nombre</th>
 
                                         <th></th>
                                     </tr>
@@ -46,17 +47,23 @@
                                     @foreach ($libros as $libro)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-										<td >{{ $libro->categoria_id }}</td>
-										<td >{{ $libro->nombre }}</td>
+
+                                            <td>{{ $libro->categoria->nombre }}</td>
+                                            <td>{{ $libro->nombre }}</td>
 
                                             <td>
                                                 <form action="{{ route('libros.destroy', $libro->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('libros.show', $libro->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('libros.edit', $libro->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
+                                                    <a class="btn btn-sm btn-primary "
+                                                        href="{{ route('libros.show', $libro->id) }}"><i
+                                                            class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
+                                                    <a class="btn btn-sm btn-success"
+                                                        href="{{ route('libros.edit', $libro->id) }}"><i
+                                                            class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i
+                                                            class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
                                                 </form>
                                             </td>
                                         </tr>
