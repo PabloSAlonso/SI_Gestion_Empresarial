@@ -1,10 +1,18 @@
 <?php
 
-    if (isset($_GET['id']) && is_numeric($_GET['id'])){
-        require_once '../modelo_clase/modelo.php';
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header('Location: ../index.php');
+    exit;
+}
 
-        $player = new Player();
-        $dato = $player -> editPlayer($_GET['id']);
+require_once '../modelo_clase/modelo.php';
 
-        require_once '../vistas/vista_editar.php';
-    }
+$player = new Player();
+$dato = $player->editPlayer(intval($_GET['id']));
+
+if (!$dato) {
+    header('Location: controlador_inicial.php');
+    exit;
+}
+
+require_once '../vistas/vista_editar.php';

@@ -4,122 +4,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vista Principal</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Montserrat", sans-serif;
-            background: #0d0d0d;
-            color: #f2f2f2;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-            color: #FDB927;
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 3px 3px 0 #552583;
-        }
-
-        table {
-            width: 90%;
-            margin: 30px auto;
-            border-collapse: collapse;
-            background: #1a1a1a;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(85, 37, 131, 0.7);
-        }
-
-        th {
-            background: #552583;
-            color: #FDB927;
-            padding: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #552583;
-            text-align: center;
-        }
-
-        tr:hover td {
-            background: #2b2b2b;
-            color: #FDB927;
-        }
-
-        img {
-            width: 80px;
-            height: auto;
-            border-radius: 6px;
-            border: 2px solid #552583;
-        }
-
-        a {
-            color: #FDB927;
-            font-weight: bold;
-            text-decoration: none;
-            border: 2px solid #FDB927;
-            padding: 6px 10px;
-            border-radius: 6px;
-            background: #552583;
-            transition: 0.25s ease;
-        }
-
-        a:hover {
-            background: #FDB927;
-            color: #000;
-            border-color: #552583;
-            box-shadow: 0 0 10px rgba(253, 185, 39, 0.6);
-        }
-
-        .return {
-            display: block;
-            width: fit-content;
-            margin: 20px auto;
-            padding: 10px 18px;
-            font-size: 1rem;
-        }
-    </style>
+    <title>Roster — Lakers Players</title>
+    <meta name="description" content="View the full Lakers roster with player stats and management options.">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    <h1>Listado </h1>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Nationality</th>
-            <th>Experience Years</th>
-            <th>Nº Teams Played</th>
-            <th>All Star Game</th>
-            <th>MVP</th>
-            <th>Player Image</th>
-        </tr>
-        <?php
-        for ($i = 0; $i < count($result); $i++) {
-        ?>
-            <tr>
-                <td><?php echo $result[$i]['player_name'] ?></td>
-                <td><?php echo $result[$i]['player_age'] ?></td>
-                <td><?php echo $result[$i]['player_nationality'] ?></td>
-                <td><?php echo $result[$i]['player_experience'] ?></td>
-                <td><?php echo $result[$i]['player_teams'] ?></td>
-                <td><?php echo $result[$i]['player_allstar'] ?></td>
-                <td><?php echo $result[$i]['player_mvp'] ?></td>
-                <td><img src='../<?php echo $result[$i]['player_image'] ?>' alt="foto" style="width:auto;height:auto;"></td>
-                <td><?php echo "<a href='../controladores/controlador_editar.php?id={$result[$i]['id']}'>Update</a>" ?></td>
-                <td><?php echo "<a href='../controladores/controlador_borrar.php?id={$result[$i]['id']}'>Delete</a>" ?></td>
-            </tr>
-        <?php } ?>
-    </table>
-    <br>
-    <a href="../index.php">Return to the Principal Page</a>
+
+    <div class="page-wrapper">
+
+        <header class="page-header">
+            <h1><i class="fas fa-basketball-ball"></i> Lakers Roster</h1>
+            <p class="subtitle">Current Player Lineup</p>
+        </header>
+
+        <?php if (isset($message)): ?>
+            <div class="alert <?php echo isset($msgType) && $msgType === 'error' ? 'alert-error' : 'alert-success'; ?>">
+                <i class="fas fa-<?php echo isset($msgType) && $msgType === 'error' ? 'exclamation-circle' : 'check-circle'; ?>"></i>
+                <?php echo htmlspecialchars($message); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($result)): ?>
+            <div class="data-table-wrapper">
+                <table class="data-table" id="rosterTable">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-user"></i> Name</th>
+                            <th><i class="fas fa-calendar-alt"></i> Age</th>
+                            <th><i class="fas fa-globe-americas"></i> Nationality</th>
+                            <th><i class="fas fa-clock"></i> Exp.</th>
+                            <th><i class="fas fa-people-group"></i> Teams</th>
+                            <th><i class="fas fa-star"></i> All-Star</th>
+                            <th><i class="fas fa-trophy"></i> MVP</th>
+                            <th><i class="fas fa-image"></i> Photo</th>
+                            <th><i class="fas fa-cog"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($result as $index => $player): ?>
+                            <tr style="animation-delay: <?php echo $index * 0.05; ?>s;" class="fade-row">
+                                <td><strong><?php echo htmlspecialchars($player['player_name']); ?></strong></td>
+                                <td><span class="stat-badge"><?php echo htmlspecialchars($player['player_age']); ?></span></td>
+                                <td><?php echo htmlspecialchars($player['player_nationality']); ?></td>
+                                <td><span class="stat-badge"><?php echo htmlspecialchars($player['player_experience']); ?></span></td>
+                                <td><span class="stat-badge"><?php echo htmlspecialchars($player['player_teams']); ?></span></td>
+                                <td><span class="stat-badge"><?php echo htmlspecialchars($player['player_allstar']); ?></span></td>
+                                <td><span class="stat-badge"><?php echo htmlspecialchars($player['player_mvp']); ?></span></td>
+                                <td>
+                                    <?php if (!empty($player['player_image'])): ?>
+                                        <img src="../<?php echo htmlspecialchars($player['player_image']); ?>" alt="<?php echo htmlspecialchars($player['player_name']); ?>" class="player-img">
+                                    <?php else: ?>
+                                        <div class="player-img" style="display:flex;align-items:center;justify-content:center;background:var(--bg-input);font-size:1.2rem;color:var(--text-secondary);">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <div class="action-btns">
+                                        <a href="../controladores/controlador_editar.php?id=<?php echo intval($player['id']); ?>" class="btn btn-secondary" title="Edit">
+                                            <i class="fas fa-pen"></i> Edit
+                                        </a>
+                                        <a href="../controladores/controlador_borrar.php?id=<?php echo intval($player['id']); ?>" class="btn btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this player?');">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <div class="glass-card empty-state">
+                <i class="fas fa-users-slash"></i>
+                <p>No players in the roster yet. Add your first player!</p>
+            </div>
+        <?php endif; ?>
+
+        <div class="nav-actions">
+            <a href="../index.php" class="btn btn-primary" id="addPlayerBtn">
+                <i class="fas fa-plus-circle"></i> Add New Player
+            </a>
+        </div>
+
+    </div>
+
+    <style>
+        .fade-row {
+            animation: fadeSlideUp 0.4s ease-out both;
+        }
+    </style>
 
 </body>
 

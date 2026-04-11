@@ -4,123 +4,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editing Players</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Montserrat", sans-serif;
-            background: #0d0d0d;
-            color: #f2f2f2;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 25px;
-            color: #FDB927;
-            font-size: 2.2rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 3px 3px 0 #552583;
-        }
-
-        .form-container {
-            width: 90%;
-            max-width: 500px;
-            background: #1a1a1a;
-            margin: 30px auto;
-            padding: 25px;
-            border-radius: 12px;
-            border: 2px solid #552583;
-            box-shadow: 0 0 15px rgba(85, 37, 131, 0.6);
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #FDB927;
-            letter-spacing: 1px;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            background: #111;
-            border: 2px solid #552583;
-            border-radius: 6px;
-            color: #fff;
-            transition: 0.25s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #FDB927;
-            box-shadow: 0 0 8px rgba(253, 185, 39, 0.6);
-        }
-
-        img {
-            display: block;
-            margin: 15px auto;
-            width: 90px;
-            border-radius: 8px;
-            border: 2px solid #552583;
-        }
-
-        input[type="submit"] {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            background: #552583;
-            border: 2px solid #FDB927;
-            color: #fff;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.25s ease;
-            letter-spacing: 1px;
-        }
-
-        input[type="submit"]:hover {
-            background: #FDB927;
-            color: #000;
-            border-color: #552583;
-            box-shadow: 0 0 10px rgba(253, 185, 39, 0.7);
-        }
-    </style>
+    <title>Edit Player — Lakers Roster</title>
+    <meta name="description" content="Edit player stats and information in the Lakers roster.">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    <h1>Insert the new Stats</h1>
 
-    <form action="../controladores/controlador_actualizar.php" method="post">
-        <input type="text" name="player_name" id="player_name" value="<?php echo $dato[0]['player_name'] ?>">
-        <br>
-        <input type="number" name="player_age" id="player_age" value="<?php echo $dato[0]['player_age'] ?>">
-        <br>
-        <input type="text" name="player_nationality" id="player_nationality" value="<?php echo $dato[0]['player_nationality'] ?>">
-        <br>
-        <input type="number" name="player_experience" id="player_experience" value="<?php echo $dato[0]['player_experience'] ?>">
-        <br>
-        <input type="number" name="player_teams" id="player_teams" value="<?php echo $dato[0]['player_teams'] ?>">
-        <br>
-        <input type="number" name="player_allstar" id="player_allstar" value="<?php echo $dato[0]['player_allstar'] ?>">
-        <br>
-        <input type="number" name="player_mvp" id="player_mvp" value="<?php echo $dato[0]['player_mvp'] ?>">
-        <br>
-        <input type="file" name="player_image" id="player_image">
-        <br>
-        <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
-        <br>
-        <img src="../<?php echo "$result[$i]['imagen']" ?>" alt="foto" style="width: 90px;height:auto;">
-        <br>
-        <input type="submit" name="actualizar" id="actualizar" value="Update">
-        <br>
-    </form>
+    <div class="page-wrapper">
+
+        <header class="page-header">
+            <h1><i class="fas fa-pen-to-square"></i> Edit Player</h1>
+            <p class="subtitle">Update player information</p>
+        </header>
+
+        <div class="glass-card form-container">
+
+            <form action="../controladores/controlador_actualizar.php" method="post" enctype="multipart/form-data" id="editPlayerForm">
+
+                <input type="hidden" name="id" value="<?php echo intval($_GET['id']); ?>">
+
+                <div class="form-group">
+                    <label for="player_name"><i class="fas fa-user"></i> Name</label>
+                    <input type="text" name="player_name" id="player_name"
+                        value="<?php echo htmlspecialchars($dato['player_name'] ?? ''); ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="player_age"><i class="fas fa-calendar-alt"></i> Age</label>
+                    <input type="number" name="player_age" id="player_age"
+                        value="<?php echo intval($dato['player_age'] ?? 0); ?>" min="16" max="50" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="player_nationality"><i class="fas fa-globe-americas"></i> Nationality</label>
+                    <input type="text" name="player_nationality" id="player_nationality"
+                        value="<?php echo htmlspecialchars($dato['player_nationality'] ?? ''); ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="player_experience"><i class="fas fa-clock"></i> Experience (Years)</label>
+                    <input type="number" name="player_experience" id="player_experience"
+                        value="<?php echo intval($dato['player_experience'] ?? 0); ?>" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="player_teams"><i class="fas fa-people-group"></i> Teams Played For</label>
+                    <input type="number" name="player_teams" id="player_teams"
+                        value="<?php echo intval($dato['player_teams'] ?? 0); ?>" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="player_allstar"><i class="fas fa-star"></i> All-Star Appearances</label>
+                    <input type="number" name="player_allstar" id="player_allstar"
+                        value="<?php echo intval($dato['player_allstar'] ?? 0); ?>" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="player_mvp"><i class="fas fa-trophy"></i> MVP Awards</label>
+                    <input type="number" name="player_mvp" id="player_mvp"
+                        value="<?php echo intval($dato['player_mvp'] ?? 0); ?>" min="0">
+                </div>
+
+                <?php if (!empty($dato['player_image'])): ?>
+                    <div style="text-align:center; margin: 16px 0;">
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">Current Photo</p>
+                        <img src="../<?php echo htmlspecialchars($dato['player_image']); ?>"
+                            alt="<?php echo htmlspecialchars($dato['player_name'] ?? 'Player'); ?>"
+                            class="img-preview">
+                        <input type="hidden" name="current_image" value="<?php echo htmlspecialchars($dato['player_image']); ?>">
+                    </div>
+                <?php endif; ?>
+
+                <div class="form-group">
+                    <label for="player_image"><i class="fas fa-camera"></i> New Image (optional)</label>
+                    <input type="file" name="player_image" id="player_image" accept="image/*">
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" name="actualizar" class="btn btn-primary" id="updateBtn">
+                        <i class="fas fa-save"></i> Update Player
+                    </button>
+                    <a href="controlador_inicial.php" class="btn btn-secondary" id="cancelBtn">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
 </body>
 
 </html>
